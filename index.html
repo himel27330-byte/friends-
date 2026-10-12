@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#100608">
+  <title>For Tonu ❤️</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      color: white;
+      background:
+        radial-gradient(ellipse at top, #4b101b, transparent 65%),
+        linear-gradient(145deg, #080808, #21060c, #080808);
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      width: min(90%, 390px);
+      padding: 35px 22px;
+      text-align: center;
+      border: 1px solid #873044;
+      border-radius: 25px;
+      background: rgba(20, 10, 13, .92);
+      box-shadow: 0 0 45px #ff174433;
+    }
+
+    .heart {
+      font-size: 65px;
+      animation: heartbeat 1.2s infinite;
+      filter: drop-shadow(0 0 15px #ff1744);
+    }
+
+    h1 {
+      color: #ff4968;
+      font-size: 32px;
+      margin: 16px 0 10px;
+    }
+
+    p {
+      color: #f4dce1;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 30px;
+      padding: 13px 27px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    #yes {
+      color: white;
+      background: linear-gradient(135deg, #ff1744, #b00020);
+      box-shadow: 0 5px 22px #ff174455;
+    }
+
+    #no {
+      color: white;
+      background: #353035;
+      border: 1px solid #71616a;
+    }
+
+    button:active {
+      transform: scale(.95);
+    }
+
+    #result {
+      display: none;
+      margin-top: 24px;
+      animation: appear .7s ease;
+    }
+
+    #result h2 {
+      color: #ff4968;
+    }
+
+    .floating {
+      position: fixed;
+      bottom: -40px;
+      z-index: 1;
+      pointer-events: none;
+      animation: floatUp linear forwards;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.15); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.1); }
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 360px) {
+      h1 { font-size: 27px; }
+      .card { padding: 28px 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <div class="heart">❤️</div>
+
+    <h1>Hey Tonu!</h1>
+
+    <p>
+      There's a little question<br>
+      I've been wanting to ask you...
+    </p>
+
+    <h2>Do you love me? 💌</h2>
+
+    <div class="buttons" id="buttons">
+      <button id="yes">Yes! ❤️</button>
+      <button id="no">No 🙈</button>
+    </div>
+
+    <div id="result" aria-live="polite">
+      <div class="heart">💖</div>
+      <h2>Awww, Tonu! 🥹</h2>
+      <p>
+        You just made this moment special! ❤️<br>
+        Sending you lots of smiles and happiness.
+      </p>
+      <p>Made with ❤️ just for you.</p>
+    </div>
+  </main>
+
+  <script>
+    const yes = document.getElementById("yes");
+    const no = document.getElementById("no");
+    const buttons = document.getElementById("buttons");
+    const result = document.getElementById("result");
+
+    let noCount = 0;
+
+    function makeHeart() {
+      const heart = document.createElement("span");
+      heart.className = "floating";
+      heart.textContent = ["❤️", "💕", "💗", "💖"][
+        Math.floor(Math.random() * 4)
+      ];
+
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (18 + Math.random() * 25) + "px";
+      heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 8500);
+    }
+
+    yes.addEventListener("click", () => {
+      buttons.style.display = "none";
+      result.style.display = "block";
+
+      for (let i = 0; i < 30; i++) {
+        setTimeout(makeHeart, i * 100);
+      }
+    });
+
+    function moveNo() {
+      noCount++;
+
+      const messages = [
+        "Are you sure? 🥺",
+        "Think again! 🙈",
+        "Pretty please? 💗",
+        "One more chance? 🥹",
+        "Haha, try again! ❤️"
+      ];
+
+      no.textContent = messages[
+        Math.min(noCount - 1, messages.length - 1)
+      ];
+
+      // Keep it inside the screen on mobile.
+      const rect = no.getBoundingClientRect();
+      const maxX = Math.max(0, window.innerWidth - rect.width - 16);
+      const maxY = Math.max(0, window.innerHeight - rect.height - 16);
+
+      no.style.position = "fixed";
+      no.style.left = (8 + Math.random() * Math.max(0, maxX - 8)) + "px";
+      no.style.top = (8 + Math.random() * Math.max(0, maxY - 8)) + "px";
+      no.style.zIndex = "5";
+    }
+
+    no.addEventListener("pointerenter", moveNo);
+
+    no.addEventListener("click", () => {
+      moveNo();
+    });
+
+    // A few gentle floating hearts in the background.
+    setInterval(makeHeart, 700);
+  </script>
+</body>
+  </html>
